@@ -118,7 +118,7 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
     }
   };
 
-  const getColorFromType = (type: number, isEditor: boolean, id: string) => {
+  const getColorFromType = (isEditor: boolean, id: string) => {
     if (isEditor && id in editorColors) {
       return editorColors[id];
     } else if (!isEditor && id in languageColors) {
@@ -126,6 +126,7 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
     }
 
     // Fallback to the original color interpolation if no predefined color is found
+    const type = Math.random() * 100;
     const r = Math.round(type * 2.55);
     const g = Math.round((100 - type) * 2.55);
     const b = Math.round(100 * 2.55);
@@ -140,15 +141,12 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
 
     for (let i = 0; i < tools.length - 1; i++) {
       accumulator += tools[i].usage;
-      const editorType = predefinedEditors.find(e => e.id === tools[i].id)?.type;
-      const langType = predefinedLanguages.find(l => l.id === tools[i].id)?.type;
-      const type = editorType ?? langType ?? 50;
       marks.push({
         value: accumulator,
         label: '',
         style: {
           '&:before': {
-            backgroundColor: getColorFromType(type, isEditor, tools[i].id)
+            backgroundColor: getColorFromType(isEditor, tools[i].id)
           }
         }
       });
@@ -183,10 +181,10 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
     const totalUsage = tools.reduce((sum, tool) => sum + tool.usage, 0);
     const weightedSum = tools.reduce((sum, tool) => {
       const weight = tool.usage / totalUsage;
-      const editorType = predefinedEditors.find(e => e.id === tool.id)?.type;
-      const langType = predefinedLanguages.find(l => l.id === tool.id)?.type;
-      const type = editorType ?? langType ?? 50; // default to center if not found
-      return sum + (weight * type);
+      const editorType = predefinedEditors.find(e => e.id === tool.id)?.score;
+      const langType = predefinedLanguages.find(l => l.id === tool.id)?.score;
+      const score = editorType ?? langType ?? 50; // default to center if not found
+      return sum + (weight * score);
     }, 0);
     // Normalize the weighted sum to be between -1 and 1
     return (weightedSum - 50) / 50;
@@ -194,7 +192,7 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
 
   return (
     <Box sx={{ mt: 4 }}>
-      {[{ title: 'Editors', tools: editors, isEditor: true, items: predefinedEditors }, 
+      {[{ title: 'Editors', tools: editors, isEditor: true, items: predefinedEditors },
         { title: 'Languages', tools: languages, isEditor: false, items: predefinedLanguages }].map(section => (
         <Fragment key={section.title}>
           <Typography variant="h6" gutterBottom>{section.title}</Typography>
@@ -213,11 +211,11 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
                     minWidth: '120px',
                     flex: '1 1 auto',
                     maxWidth: '180px',
-                    borderColor: getColorFromType(item.type, section.isEditor, item.id),
-                    color: getColorFromType(item.type, section.isEditor, item.id),
+                    borderColor: getColorFromType(section.isEditor, item.id),
+                    color: getColorFromType(section.isEditor, item.id),
                     '&:hover': {
-                      borderColor: getColorFromType(item.type, section.isEditor, item.id),
-                      backgroundColor: `${getColorFromType(item.type, section.isEditor, item.id)}10`
+                      borderColor: getColorFromType(section.isEditor, item.id),
+                      backgroundColor: `${getColorFromType(section.isEditor, item.id)}10`
                     }
                   }}
                 >
@@ -244,10 +242,9 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
                     opacity: 1,
                     background: 'linear-gradient(to right, ' +
                       section.tools.map((tool, index, array) => {
-                        const type = (section.isEditor ? predefinedEditors : predefinedLanguages).find(e => e.id === tool.id)?.type ?? 50;
                         const startPercent = index === 0 ? 0 : array.slice(0, index).reduce((sum, e) => sum + e.usage, 0);
                         const endPercent = startPercent + tool.usage;
-                        return `${getColorFromType(type, section.isEditor, tool.id)} ${startPercent}% ${endPercent}%`;
+                        return `${getColorFromType(section.isEditor, tool.id)} ${startPercent}% ${endPercent}%`;
                       }).join(', ') + ')'
                   }
                 }}

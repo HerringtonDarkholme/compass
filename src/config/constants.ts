@@ -1,35 +1,35 @@
 // 0 - 100, 0 most liberal, 100 most authoritative
 export const predefinedEditors = [
-  { id: 'vscode', name: 'VS Code', type: 90 },
-  { id: 'vim', name: 'Vim', type: 20 },
-  { id: 'emacs', name: 'Emacs', type: 20 },
-  { id: 'sublime', name: 'Sublime Text', type: 40 },
-  { id: 'atom', name: 'Atom', type: 70 },
-  { id: 'webstorm', name: 'WebStorm', type: 100 },
-  { id: 'notepadpp', name: 'Notepad++', type: 45 },
-  { id: 'eclipse', name: 'Eclipse', type: 90 },
-  { id: 'intellij', name: 'IntelliJ IDEA', type: 100 },
-  { id: 'nano', name: 'Nano', type: 0 }
+  { id: 'vscode', name: 'VS Code', score: 90 },
+  { id: 'vim', name: 'Vim', score: 20 },
+  { id: 'emacs', name: 'Emacs', score: 20 },
+  { id: 'sublime', name: 'Sublime Text', score: 40 },
+  { id: 'atom', name: 'Atom', score: 70 },
+  { id: 'webstorm', name: 'WebStorm', score: 100 },
+  { id: 'notepadpp', name: 'Notepad++', score: 45 },
+  { id: 'eclipse', name: 'Eclipse', score: 90 },
+  { id: 'intellij', name: 'IntelliJ IDEA', score: 100 },
+  { id: 'nano', name: 'Nano', score: 0 }
 ];
 
 // 0 - 100, 0 most indie, 100 most big tech
 export const predefinedLanguages = [
-  { id: 'csharp', name: 'C#', type: 95 },
-  { id: 'java', name: 'Java', type: 90 },
-  { id: 'typescript', name: 'TypeScript', type: 80 },
-  { id: 'kotlin', name: 'Kotlin', type: 75 },
-  { id: 'swift', name: 'Swift', type: 70 },
-  { id: 'dart', name: 'Dart', type: 65 },
-  { id: 'go', name: 'Go', type: 60 },
-  { id: 'python', name: 'Python', type: 50 },
-  { id: 'scala', name: 'Scala', type: 45 },
-  { id: 'rust', name: 'Rust', type: 40 },
-  { id: 'f_sharp', name: 'F#', type: 30 },
-  { id: 'haskell', name: 'Haskell', type: 25 },
-  { id: 'ruby', name: 'Ruby', type: 20 },
-  { id: 'erlang', name: 'Erlang', type: 15 },
-  { id: 'elixir', name: 'Elixir', type: 10 },
-  { id: 'clojure', name: 'Clojure', type: 5 }
+  { id: 'csharp', name: 'C#', score: 95 },
+  { id: 'java', name: 'Java', score: 90 },
+  { id: 'typescript', name: 'TypeScript', score: 80 },
+  { id: 'kotlin', name: 'Kotlin', score: 75 },
+  { id: 'swift', name: 'Swift', score: 70 },
+  { id: 'dart', name: 'Dart', score: 65 },
+  { id: 'go', name: 'Go', score: 60 },
+  { id: 'python', name: 'Python', score: 50 },
+  { id: 'scala', name: 'Scala', score: 45 },
+  { id: 'rust', name: 'Rust', score: 40 },
+  { id: 'f_sharp', name: 'F#', score: 30 },
+  { id: 'haskell', name: 'Haskell', score: 25 },
+  { id: 'ruby', name: 'Ruby', score: 20 },
+  { id: 'erlang', name: 'Erlang', score: 15 },
+  { id: 'elixir', name: 'Elixir', score: 10 },
+  { id: 'clojure', name: 'Clojure', score: 5 }
 ];
 
 // Editor colors based on their brand/icon colors
