@@ -210,6 +210,7 @@ const InputPanel = ({ onPositionUpdate, hideControl }: InputPanelProps) => {
                   onClick={() => addTool(item, section.isEditor)}
                   disabled={section.tools.some(t => t.id === item.id)}
                   sx={{
+                    textTransform: 'none',
                     whiteSpace: 'normal',
                     textAlign: 'center',
                     minHeight: '48px',
