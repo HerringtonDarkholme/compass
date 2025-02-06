@@ -3,16 +3,12 @@ import {
   Box,
   Button,
   Typography,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { Slider } from '@mui/material';
+import { predefinedEditors, predefinedLanguages, editorColors, languageColors } from '../config/constants';
+import ToolList from './ToolList';
 
-interface Tool {
+export interface Tool {
   id: string;
   name: string;
   usage: number;
@@ -21,42 +17,11 @@ interface Tool {
 interface InputPanelProps {
   onPositionUpdate: (editorPos: number, langPos: number) => void;
   onSelectionChange?: (hasEditors: boolean, hasLanguages: boolean) => void;
+  hideButtons?: boolean;
 }
 
-// 0 - 100, 0 most liberal, 100 most authoritative
-const predefinedEditors = [
-  { id: 'vscode', name: 'VS Code', type: 90 },
-  { id: 'vim', name: 'Vim', type: 20 },
-  { id: 'emacs', name: 'Emacs', type: 20 },
-  { id: 'sublime', name: 'Sublime Text', type: 40 },
-  { id: 'atom', name: 'Atom', type: 70 },
-  { id: 'webstorm', name: 'WebStorm', type: 100 },
-  { id: 'notepadpp', name: 'Notepad++', type: 45 },
-  { id: 'eclipse', name: 'Eclipse', type: 90 },
-  { id: 'intellij', name: 'IntelliJ IDEA', type: 100 },
-  { id: 'nano', name: 'Nano', type: 0 }
-];
-// 0 - 100, 0 most indie, 100 most big tech
-const predefinedLanguages = [
-  { id: 'csharp', name: 'C#', type: 95 },
-  { id: 'java', name: 'Java', type: 90 },
-  { id: 'typescript', name: 'TypeScript', type: 80 },
-  { id: 'kotlin', name: 'Kotlin', type: 75 },
-  { id: 'swift', name: 'Swift', type: 70 },
-  { id: 'dart', name: 'Dart', type: 65 },
-  { id: 'go', name: 'Go', type: 60 },
-  { id: 'python', name: 'Python', type: 50 },
-  { id: 'scala', name: 'Scala', type: 45 },
-  { id: 'rust', name: 'Rust', type: 40 },
-  { id: 'f_sharp', name: 'F#', type: 30 },
-  { id: 'haskell', name: 'Haskell', type: 25 },
-  { id: 'ruby', name: 'Ruby', type: 20 },
-  { id: 'erlang', name: 'Erlang', type: 15 },
-  { id: 'elixir', name: 'Elixir', type: 10 },
-  { id: 'clojure', name: 'Clojure', type: 5 }
-];
 
-const InputPanel = ({ onPositionUpdate, onSelectionChange }: InputPanelProps) => {
+const InputPanel = ({ onPositionUpdate, onSelectionChange, hideButtons }: InputPanelProps) => {
   const [editors, setEditors] = useState<Tool[]>([]);
   const [languages, setLanguages] = useState<Tool[]>([]);
 
@@ -157,40 +122,6 @@ const InputPanel = ({ onPositionUpdate, onSelectionChange }: InputPanelProps) =>
   };
 
   const getColorFromType = (type: number, isEditor: boolean, id: string) => {
-    // Editor colors based on their brand/icon colors
-    const editorColors: Record<string, string> = {
-      vscode: '#007ACC',
-      vim: '#019733',
-      emacs: '#7F5AB6',
-      sublime: '#FF9800',
-      atom: '#66595C',
-      webstorm: '#00CDD7',
-      notepadpp: '#90E59A',
-      eclipse: '#2C2255',
-      intellij: '#087CFA',
-      nano: '#4A90E2'
-    };
-
-    // Programming language colors from GitHub
-    const languageColors: Record<string, string> = {
-      csharp: '#178600',
-      java: '#B07219',
-      typescript: '#3178C6',
-      kotlin: '#A97BFF',
-      swift: '#F05138',
-      dart: '#00B4AB',
-      go: '#00ADD8',
-      python: '#3572A5',
-      scala: '#DC322F',
-      rust: '#DEA584',
-      f_sharp: '#B845FC',
-      haskell: '#5E5086',
-      ruby: '#701516',
-      erlang: '#B83998',
-      elixir: '#6E4A7E',
-      clojure: '#DB5855'
-    };
-
     if (isEditor && id in editorColors) {
       return editorColors[id];
     } else if (!isEditor && id in languageColors) {
@@ -266,32 +197,36 @@ const InputPanel = ({ onPositionUpdate, onSelectionChange }: InputPanelProps) =>
 
   return (
     <Box sx={{ mt: 4 }}>
-      <Typography variant="h6" gutterBottom>Editors</Typography>
-      <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>        {predefinedEditors.map(editor => (
-          <Button
-            key={editor.id}
-            variant="outlined"
-            onClick={() => addTool(editor, true)}
-            disabled={editors.some(e => e.id === editor.id)}
-            sx={{
-              whiteSpace: 'normal',
-              textAlign: 'center',
-              minHeight: '48px',
-              minWidth: '120px',
-              flex: '1 1 auto',
-              maxWidth: '180px',
-              borderColor: getColorFromType(editor.type, true, editor.id),
-              color: getColorFromType(editor.type, true, editor.id),
-              '&:hover': {
+      {!hideButtons && (
+        <>
+          <Typography variant="h6" gutterBottom>Editors</Typography>
+          <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>        {predefinedEditors.map(editor => (
+            <Button
+              key={editor.id}
+              variant="outlined"
+              onClick={() => addTool(editor, true)}
+              disabled={editors.some(e => e.id === editor.id)}
+              sx={{
+                whiteSpace: 'normal',
+                textAlign: 'center',
+                minHeight: '48px',
+                minWidth: '120px',
+                flex: '1 1 auto',
+                maxWidth: '180px',
                 borderColor: getColorFromType(editor.type, true, editor.id),
-                backgroundColor: `${getColorFromType(editor.type, true, editor.id)}10`
-              }
-            }}
-          >
-            {editor.name}
-          </Button>
-        ))}
-      </Box>
+                color: getColorFromType(editor.type, true, editor.id),
+                '&:hover': {
+                  borderColor: getColorFromType(editor.type, true, editor.id),
+                  backgroundColor: `${getColorFromType(editor.type, true, editor.id)}10`
+                }
+              }}
+            >
+              {editor.name}
+            </Button>
+          ))}
+          </Box>
+        </>
+      )}
 
       {editors.length > 0 && (
         <Box sx={{ mb: 4 }}>
@@ -318,49 +253,45 @@ const InputPanel = ({ onPositionUpdate, onSelectionChange }: InputPanelProps) =>
               }
             }}
           />
-          <List>
-            {editors.map((editor) => (
-              <ListItem key={editor.id} dense>
-                <ListItemText
-                  primary={`${editor.name} (${editor.usage.toFixed(1)}%)`}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" onClick={() => removeTool(editor.id, true)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </List>
+          <ToolList
+            tools={editors}
+            isEditor={true}
+            getColorFromType={getColorFromType}
+            onRemove={(id) => removeTool(id, true)}
+          />
         </Box>
       )}
 
-      <Typography variant="h6" gutterBottom>Languages</Typography>
-      <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>        {predefinedLanguages.map(lang => (
-          <Button
-            key={lang.id}
-            variant="outlined"
-            onClick={() => addTool(lang, false)}
-            disabled={languages.some(l => l.id === lang.id)}
-            sx={{
-              whiteSpace: 'normal',
-              textAlign: 'center',
-              minHeight: '48px',
-              minWidth: '120px',
-              flex: '1 1 auto',
-              maxWidth: '180px',
-              borderColor: getColorFromType(lang.type, false, lang.id),
-              color: getColorFromType(lang.type, false, lang.id),
-              '&:hover': {
-                borderColor: getColorFromType(lang.type, false, lang.id),
-                backgroundColor: `${getColorFromType(lang.type, false, lang.id)}10`
-              }
-            }}
-          >
-            {lang.name}
-          </Button>
-        ))}
-      </Box>
+      {!hideButtons && (
+        <>
+          <Typography variant="h6" gutterBottom>Languages</Typography>
+          <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>        {predefinedLanguages.map(lang => (
+              <Button
+                key={lang.id}
+                variant="outlined"
+                onClick={() => addTool(lang, false)}
+                disabled={languages.some(l => l.id === lang.id)}
+                sx={{
+                  whiteSpace: 'normal',
+                  textAlign: 'center',
+                  minHeight: '48px',
+                  minWidth: '120px',
+                  flex: '1 1 auto',
+                  maxWidth: '180px',
+                  borderColor: getColorFromType(lang.type, false, lang.id),
+                  color: getColorFromType(lang.type, false, lang.id),
+                  '&:hover': {
+                    borderColor: getColorFromType(lang.type, false, lang.id),
+                    backgroundColor: `${getColorFromType(lang.type, false, lang.id)}10`
+                  }
+                }}
+              >
+                {lang.name}
+              </Button>
+            ))}
+          </Box>
+        </>
+      )}
 
       {languages.length > 0 && (
         <Box sx={{ mb: 4 }}>
@@ -387,20 +318,12 @@ const InputPanel = ({ onPositionUpdate, onSelectionChange }: InputPanelProps) =>
               }
             }}
           />
-          <List>
-            {languages.map((lang) => (
-              <ListItem key={lang.id} dense>
-                <ListItemText
-                  primary={`${lang.name} (${lang.usage.toFixed(1)}%)`}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" onClick={() => removeTool(lang.id, false)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </List>
+          <ToolList
+            tools={languages}
+            isEditor={false}
+            getColorFromType={getColorFromType}
+            onRemove={(id) => removeTool(id, false)}
+          />
         </Box>
       )}
     </Box>

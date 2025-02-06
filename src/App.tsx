@@ -25,8 +25,6 @@ const App = () => {
     setPosition({ x: langPos, y: editorPos });
   };
 
-
-
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg">
@@ -45,8 +43,8 @@ const App = () => {
             Add your preferred editors and languages below, then adjust their usage percentages to see where you stand in the programming paradigm space.
           </Typography>
 
-          <InputPanel onPositionUpdate={handlePositionUpdate} />
-
+          <InputPanel onPositionUpdate={handlePositionUpdate} hideButtons={showCompass} />
+          
           {!showCompass && (
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
               <Button
@@ -61,12 +59,9 @@ const App = () => {
           )}
 
           {showCompass && (
-            <>
-              <CompassView position={position} />
-            </>
+            <CompassView position={position} />
           )}
         </Box>
-
       </Container>
     </ThemeProvider>
   );

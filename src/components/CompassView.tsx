@@ -168,7 +168,9 @@ const CompassView = ({ position }: CompassViewProps) => {
       </CompassContainer>
       <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2, mb: 4 }}>
         <TwitterShareButton url="https://programming-compass.app" title={getTweetText()}>
-          <Button variant="contained" color="primary">Share on Twitter</Button>
+          <div style={{ display: 'inline-block' }}>
+            <Button variant="contained" color="primary" component="span">Share on Twitter</Button>
+          </div>
         </TwitterShareButton>
         <Button variant="contained" color="secondary" onClick={handleCopyImage}>
           Copy Image
