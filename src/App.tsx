@@ -126,6 +126,9 @@ const App = () => {
         />
         <Box sx={{ mt: 4, mb: 2, textAlign: 'center', color: 'text.secondary' }}>
           <Typography variant="body2" gutterBottom>
+            Inspired by [IroncladDev](https://x.com/IroncladDev/status/1887289856763584959)
+          </Typography>
+          <Typography variant="body2" gutterBottom>
             Made by HerringtonDarkholme with Trae
           </Typography>
           <Typography variant="body2">
