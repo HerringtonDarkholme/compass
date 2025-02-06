@@ -126,14 +126,14 @@ const App = () => {
         />
         <Box sx={{ mt: 4, mb: 2, textAlign: 'center', color: 'text.secondary' }}>
           <Typography variant="body2" gutterBottom>
-            Inspired by [IroncladDev](https://x.com/IroncladDev/status/1887289856763584959)
+            Inspired by <a href="https://x.com/IroncladDev/status/1887289856763584959" target="_blank">IroncladDev</a>
           </Typography>
           <Typography variant="body2" gutterBottom>
             Made by HerringtonDarkholme with Trae
           </Typography>
           <Typography variant="body2">
             If you feel this fun, please give{' '}
-            <a href="https://github.com/ast-grep/ast-grep" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/ast-grep/ast-grep" target="_blank">
               ast-grep
             </a>
             {' '}a star ⭐
