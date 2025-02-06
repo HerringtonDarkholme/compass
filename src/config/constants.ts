@@ -51,7 +51,7 @@ export const editorColors: Record<string, string> = {
   intellij: '#087CFA',
   nano: '#4A90E2',
   cursor: '#0066FF',
-  zed: '#0751cf';
+  zed: '#0751cf',
 };
 
 // Programming language colors from GitHub
