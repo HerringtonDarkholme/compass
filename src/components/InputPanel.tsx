@@ -65,21 +65,28 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
     if (tools.length === 0) {
       const newTool = { ...tool, usage: 100 };
       if (isEditor) {
-        setEditors([newTool]);
+        const newEditors = [newTool];
+        setEditors(newEditors);
+        updatePositions(newEditors, languages);
       } else {
-        setLanguages([newTool]);
+        const newLanguages = [newTool];
+        setLanguages(newLanguages);
+        updatePositions(editors, newLanguages);
       }
     } else {
       const equalShare = 100 / (tools.length + 1);
       const updatedTools = tools.map(t => ({ ...t, usage: equalShare }));
       const newTool = { ...tool, usage: equalShare };
       if (isEditor) {
-        setEditors([...updatedTools, newTool]);
+        const newEditors = [...updatedTools, newTool];
+        setEditors(newEditors);
+        updatePositions(newEditors, languages);
       } else {
-        setLanguages([...updatedTools, newTool]);
+        const newLanguages = [...updatedTools, newTool];
+        setLanguages(newLanguages);
+        updatePositions(editors, newLanguages);
       }
     }
-    updatePositions();
   };
 
   const removeTool = (id: string, isEditor: boolean) => {
@@ -88,21 +95,26 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
       const totalUsage = remainingEditors.reduce((sum, e) => sum + e.usage, 0);
       if (remainingEditors.length > 0) {
         const scaleFactor = 100 / totalUsage;
-        setEditors(remainingEditors.map(e => ({ ...e, usage: e.usage * scaleFactor })));
+        const newEditors = remainingEditors.map(e => ({ ...e, usage: e.usage * scaleFactor }));
+        setEditors(newEditors);
+        updatePositions(newEditors, languages);
       } else {
         setEditors([]);
+        updatePositions([], languages);
       }
     } else {
       const remainingLanguages = languages.filter(l => l.id !== id);
       const totalUsage = remainingLanguages.reduce((sum, l) => sum + l.usage, 0);
       if (remainingLanguages.length > 0) {
         const scaleFactor = 100 / totalUsage;
-        setLanguages(remainingLanguages.map(l => ({ ...l, usage: l.usage * scaleFactor })));
+        const newLanguages = remainingLanguages.map(l => ({ ...l, usage: l.usage * scaleFactor }));
+        setLanguages(newLanguages);
+        updatePositions(editors, newLanguages);
       } else {
         setLanguages([]);
+        updatePositions(editors, []);
       }
     }
-    updatePositions();
   };
 
   const handleSliderChange = (values: number[], isEditor: boolean) => {
@@ -133,8 +145,13 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
       usage: normalizedUsages[index]
     }));
 
-    setTools(updatedTools);
-    updatePositions();
+    if (isEditor) {
+      setEditors(updatedTools);
+      updatePositions(updatedTools, languages);
+    } else {
+      setLanguages(updatedTools);
+      updatePositions(editors, updatedTools);
+    }
   };
 
   const getColorFromType = (type: number, isEditor: boolean, id: string) => {
@@ -224,9 +241,9 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
     return values;
   };
 
-  const updatePositions = () => {
-    const editorPos = calculatePosition(editors);
-    const langPos = calculatePosition(languages);
+  const updatePositions = (currentEditors: Tool[], currentLanguages: Tool[]) => {
+    const editorPos = calculatePosition(currentEditors);
+    const langPos = calculatePosition(currentLanguages);
     onPositionUpdate(editorPos, langPos);
   };
 

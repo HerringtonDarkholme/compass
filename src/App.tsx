@@ -155,9 +155,10 @@ const App = () => {
                   height: '20px',
                   backgroundColor: 'black',
                   borderRadius: '50%',
-                  left: `calc(50% + ${position.x * 250}px - 10px)`,
-                  top: `calc(50% + ${position.y * 250}px - 10px)`,
+                  left: `${(position.x / 2 + 0.5)* 100}%`,
+                  bottom: `${(position.y / 2 + 0.5) * 100}%`,
                   transition: 'all 0.3s ease-in-out',
+                  transform: 'translate(-50%, 50%)',
                   zIndex: 2,
                 }}
               />
