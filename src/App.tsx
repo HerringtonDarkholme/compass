@@ -124,6 +124,18 @@ const App = () => {
           message="Image copied to clipboard!"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         />
+        <Box sx={{ mt: 4, mb: 2, textAlign: 'center', color: 'text.secondary' }}>
+          <Typography variant="body2" gutterBottom>
+            Made by HerringtonDarkholme with Trae
+          </Typography>
+          <Typography variant="body2">
+            If you feel this fun, please give{' '}
+            <a href="https://github.com/ast-grep/ast-grep" target="_blank" rel="noopener noreferrer">
+              ast-grep
+            </a>
+            {' '}a star ⭐
+          </Typography>
+        </Box>
       </Container>
     </ThemeProvider>
   );
