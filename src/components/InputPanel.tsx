@@ -139,7 +139,7 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
 
   const getColorFromType = (type: number, isEditor: boolean, id: string) => {
     // Editor colors based on their brand/icon colors
-    const editorColors = {
+    const editorColors: Record<string, string> = {
       vscode: '#007ACC',
       vim: '#019733',
       emacs: '#7F5AB6',
@@ -151,9 +151,9 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
       intellij: '#087CFA',
       nano: '#4A90E2'
     };
-  
+
     // Programming language colors from GitHub
-    const languageColors = {
+    const languageColors: Record<string, string> = {
       csharp: '#178600',
       java: '#B07219',
       typescript: '#3178C6',
@@ -171,13 +171,13 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
       elixir: '#6E4A7E',
       clojure: '#DB5855'
     };
-  
+
     if (isEditor && id in editorColors) {
       return editorColors[id];
     } else if (!isEditor && id in languageColors) {
       return languageColors[id];
     }
-  
+
     // Fallback to the original color interpolation if no predefined color is found
     const r = Math.round(type * 2.55);
     const g = Math.round((100 - type) * 2.55);
