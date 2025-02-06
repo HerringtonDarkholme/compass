@@ -16,12 +16,11 @@ export interface Tool {
 
 interface InputPanelProps {
   onPositionUpdate: (editorPos: number, langPos: number) => void;
-  onSelectionChange?: (hasEditors: boolean, hasLanguages: boolean) => void;
   hideButtons?: boolean;
 }
 
 
-const InputPanel = ({ onPositionUpdate, onSelectionChange, hideButtons }: InputPanelProps) => {
+const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
   const [editors, setEditors] = useState<Tool[]>([]);
   const [languages, setLanguages] = useState<Tool[]>([]);
 
@@ -53,7 +52,6 @@ const InputPanel = ({ onPositionUpdate, onSelectionChange, hideButtons }: InputP
         updatePositions(editors, newLanguages);
       }
     }
-    onSelectionChange?.(editors.length > 0 || isEditor, languages.length > 0 || !isEditor);
   };
 
   const removeTool = (id: string, isEditor: boolean) => {
@@ -82,7 +80,6 @@ const InputPanel = ({ onPositionUpdate, onSelectionChange, hideButtons }: InputP
         updatePositions(editors, []);
       }
     }
-    onSelectionChange?.(editors.length > 0 && !isEditor, languages.length > 0 && isEditor);
   };
 
   const handleSliderChange = (values: number[], isEditor: boolean) => {
