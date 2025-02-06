@@ -61,7 +61,7 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
 
   const addTool = (tool: { id: string; name: string }, isEditor: boolean) => {
     const tools = isEditor ? editors : languages;
-    
+
     if (tools.length === 0) {
       const newTool = { ...tool, usage: 100 };
       if (isEditor) {
@@ -137,31 +137,90 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
     updatePositions();
   };
 
-  const getSliderMarks = (tools: Tool[]) => {
+  const getColorFromType = (type: number, isEditor: boolean, id: string) => {
+    // Editor colors based on their brand/icon colors
+    const editorColors = {
+      vscode: '#007ACC',
+      vim: '#019733',
+      emacs: '#7F5AB6',
+      sublime: '#FF9800',
+      atom: '#66595C',
+      webstorm: '#00CDD7',
+      notepadpp: '#90E59A',
+      eclipse: '#2C2255',
+      intellij: '#087CFA',
+      nano: '#4A90E2'
+    };
+  
+    // Programming language colors from GitHub
+    const languageColors = {
+      csharp: '#178600',
+      java: '#B07219',
+      typescript: '#3178C6',
+      kotlin: '#A97BFF',
+      swift: '#F05138',
+      dart: '#00B4AB',
+      go: '#00ADD8',
+      python: '#3572A5',
+      scala: '#DC322F',
+      rust: '#DEA584',
+      f_sharp: '#B845FC',
+      haskell: '#5E5086',
+      ruby: '#701516',
+      erlang: '#B83998',
+      elixir: '#6E4A7E',
+      clojure: '#DB5855'
+    };
+  
+    if (isEditor && id in editorColors) {
+      return editorColors[id];
+    } else if (!isEditor && id in languageColors) {
+      return languageColors[id];
+    }
+  
+    // Fallback to the original color interpolation if no predefined color is found
+    const r = Math.round(type * 2.55);
+    const g = Math.round((100 - type) * 2.55);
+    const b = Math.round(100 * 2.55);
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+
+  const getSliderMarks = (tools: Tool[], isEditor: boolean) => {
     if (tools.length <= 1) return [];
-    
+
     const marks = [];
     let accumulator = 0;
-    
+
     for (let i = 0; i < tools.length - 1; i++) {
       accumulator += tools[i].usage;
-      marks.push({ value: accumulator, label: '' });
+      const editorType = predefinedEditors.find(e => e.id === tools[i].id)?.type;
+      const langType = predefinedLanguages.find(l => l.id === tools[i].id)?.type;
+      const type = editorType ?? langType ?? 50;
+      marks.push({
+        value: accumulator,
+        label: '',
+        style: {
+          '&:before': {
+            backgroundColor: getColorFromType(type, isEditor, tools[i].id)
+          }
+        }
+      });
     }
-    
+
     return marks;
   };
 
   const getSliderValue = (tools: Tool[]) => {
     if (tools.length <= 1) return [];
-    
+
     const values = [];
     let accumulator = 0;
-    
+
     for (let i = 0; i < tools.length - 1; i++) {
       accumulator += tools[i].usage;
       values.push(accumulator);
     }
-    
+
     return values;
   };
 
@@ -173,7 +232,7 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
 
   const calculatePosition = (tools: Tool[]) => {
     if (tools.length === 0) return 0;
-    
+
     const totalUsage = tools.reduce((sum, tool) => sum + tool.usage, 0);
     const weightedSum = tools.reduce((sum, tool) => {
       const weight = tool.usage / totalUsage;
@@ -189,13 +248,26 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
   return (
     <Box sx={{ mt: 4 }}>
       <Typography variant="h6" gutterBottom>Editors</Typography>
-      <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-        {predefinedEditors.map(editor => (
+      <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>        {predefinedEditors.map(editor => (
           <Button
             key={editor.id}
             variant="outlined"
             onClick={() => addTool(editor, true)}
             disabled={editors.some(e => e.id === editor.id)}
+            sx={{
+              whiteSpace: 'normal',
+              textAlign: 'center',
+              minHeight: '48px',
+              minWidth: '120px',
+              flex: '1 1 auto',
+              maxWidth: '180px',
+              borderColor: getColorFromType(editor.type, true, editor.id),
+              color: getColorFromType(editor.type, true, editor.id),
+              '&:hover': {
+                borderColor: getColorFromType(editor.type, true, editor.id),
+                backgroundColor: `${getColorFromType(editor.type, true, editor.id)}10`
+              }
+            }}
           >
             {editor.name}
           </Button>
@@ -207,15 +279,30 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
           <Slider
             value={getSliderValue(editors)}
             onChange={(_, value) => handleSliderChange(value as number[], true)}
-            marks={getSliderMarks(editors)}
+            marks={getSliderMarks(editors, true)}
             step={1}
             min={0}
             max={100}
+            sx={{
+              '& .MuiSlider-track': {
+                background: 'none'
+              },
+              '& .MuiSlider-rail': {
+                opacity: 1,
+                background: 'linear-gradient(to right, ' +
+                  editors.map((editor, index, array) => {
+                    const type = predefinedEditors.find(e => e.id === editor.id)?.type ?? 50;
+                    const startPercent = index === 0 ? 0 : array.slice(0, index).reduce((sum, e) => sum + e.usage, 0);
+                    const endPercent = startPercent + editor.usage;
+                    return `${getColorFromType(type, true, editor.id)} ${startPercent}% ${endPercent}%`;
+                  }).join(', ') + ')'
+              }
+            }}
           />
           <List>
-            {editors.map((editor, index) => (
+            {editors.map((editor) => (
               <ListItem key={editor.id} dense>
-                <ListItemText 
+                <ListItemText
                   primary={`${editor.name} (${editor.usage.toFixed(1)}%)`}
                 />
                 <ListItemSecondaryAction>
@@ -230,13 +317,26 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
       )}
 
       <Typography variant="h6" gutterBottom>Languages</Typography>
-      <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-        {predefinedLanguages.map(lang => (
+      <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>        {predefinedLanguages.map(lang => (
           <Button
             key={lang.id}
             variant="outlined"
             onClick={() => addTool(lang, false)}
             disabled={languages.some(l => l.id === lang.id)}
+            sx={{
+              whiteSpace: 'normal',
+              textAlign: 'center',
+              minHeight: '48px',
+              minWidth: '120px',
+              flex: '1 1 auto',
+              maxWidth: '180px',
+              borderColor: getColorFromType(lang.type, false, lang.id),
+              color: getColorFromType(lang.type, false, lang.id),
+              '&:hover': {
+                borderColor: getColorFromType(lang.type, false, lang.id),
+                backgroundColor: `${getColorFromType(lang.type, false, lang.id)}10`
+              }
+            }}
           >
             {lang.name}
           </Button>
@@ -248,15 +348,30 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
           <Slider
             value={getSliderValue(languages)}
             onChange={(_, value) => handleSliderChange(value as number[], false)}
-            marks={getSliderMarks(languages)}
+            marks={getSliderMarks(languages, false)}
             step={1}
             min={0}
             max={100}
+            sx={{
+              '& .MuiSlider-track': {
+                background: 'none'
+              },
+              '& .MuiSlider-rail': {
+                opacity: 1,
+                background: 'linear-gradient(to right, ' +
+                  languages.map((lang, index, array) => {
+                    const type = predefinedLanguages.find(l => l.id === lang.id)?.type ?? 50;
+                    const startPercent = index === 0 ? 0 : array.slice(0, index).reduce((sum, l) => sum + l.usage, 0);
+                    const endPercent = startPercent + lang.usage;
+                    return `${getColorFromType(type, false, lang.id)} ${startPercent}% ${endPercent}%`;
+                  }).join(', ') + ')'
+              }
+            }}
           />
           <List>
-            {languages.map((lang, index) => (
+            {languages.map((lang) => (
               <ListItem key={lang.id} dense>
-                <ListItemText 
+                <ListItemText
                   primary={`${lang.name} (${lang.usage.toFixed(1)}%)`}
                 />
                 <ListItemSecondaryAction>
