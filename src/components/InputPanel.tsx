@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import {
   Box,
   Button,
@@ -197,134 +197,74 @@ const InputPanel = ({ onPositionUpdate, onSelectionChange, hideButtons }: InputP
 
   return (
     <Box sx={{ mt: 4 }}>
-      <Typography variant="h6" gutterBottom>Editors</Typography>
-      {!hideButtons && (
-        <>
-          <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>        {predefinedEditors.map(editor => (
-            <Button
-              key={editor.id}
-              variant="outlined"
-              onClick={() => addTool(editor, true)}
-              disabled={editors.some(e => e.id === editor.id)}
-              sx={{
-                whiteSpace: 'normal',
-                textAlign: 'center',
-                minHeight: '48px',
-                minWidth: '120px',
-                flex: '1 1 auto',
-                maxWidth: '180px',
-                borderColor: getColorFromType(editor.type, true, editor.id),
-                color: getColorFromType(editor.type, true, editor.id),
-                '&:hover': {
-                  borderColor: getColorFromType(editor.type, true, editor.id),
-                  backgroundColor: `${getColorFromType(editor.type, true, editor.id)}10`
-                }
-              }}
-            >
-              {editor.name}
-            </Button>
-          ))}
-          </Box>
-        </>
-      )}
+      {[{ title: 'Editors', tools: editors, isEditor: true, items: predefinedEditors }, 
+        { title: 'Languages', tools: languages, isEditor: false, items: predefinedLanguages }].map(section => (
+        <Fragment key={section.title}>
+          <Typography variant="h6" gutterBottom>{section.title}</Typography>
+          {!hideButtons && (
+            <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>
+              {section.items.map(item => (
+                <Button
+                  key={item.id}
+                  variant="outlined"
+                  onClick={() => addTool(item, section.isEditor)}
+                  disabled={section.tools.some(t => t.id === item.id)}
+                  sx={{
+                    whiteSpace: 'normal',
+                    textAlign: 'center',
+                    minHeight: '48px',
+                    minWidth: '120px',
+                    flex: '1 1 auto',
+                    maxWidth: '180px',
+                    borderColor: getColorFromType(item.type, section.isEditor, item.id),
+                    color: getColorFromType(item.type, section.isEditor, item.id),
+                    '&:hover': {
+                      borderColor: getColorFromType(item.type, section.isEditor, item.id),
+                      backgroundColor: `${getColorFromType(item.type, section.isEditor, item.id)}10`
+                    }
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Box>
+          )}
 
-      {editors.length > 0 && (
-        <Box sx={{ mb: 4 }}>
-          <Slider
-            value={getSliderValue(editors)}
-            onChange={(_, value) => handleSliderChange(value as number[], true)}
-            marks={getSliderMarks(editors, true)}
-            step={1}
-            min={0}
-            max={100}
-            sx={{
-              '& .MuiSlider-track': {
-                background: 'none'
-              },
-              '& .MuiSlider-rail': {
-                opacity: 1,
-                background: 'linear-gradient(to right, ' +
-                  editors.map((editor, index, array) => {
-                    const type = predefinedEditors.find(e => e.id === editor.id)?.type ?? 50;
-                    const startPercent = index === 0 ? 0 : array.slice(0, index).reduce((sum, e) => sum + e.usage, 0);
-                    const endPercent = startPercent + editor.usage;
-                    return `${getColorFromType(type, true, editor.id)} ${startPercent}% ${endPercent}%`;
-                  }).join(', ') + ')'
-              }
-            }}
-          />
-          <ToolList
-            tools={editors}
-            isEditor={true}
-            getColorFromType={getColorFromType}
-            onRemove={(id) => removeTool(id, true)}
-          />
-        </Box>
-      )}
-      <Typography variant="h6" gutterBottom>Languages</Typography>
-      {!hideButtons && (
-        <>
-          <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>        {predefinedLanguages.map(lang => (
-              <Button
-                key={lang.id}
-                variant="outlined"
-                onClick={() => addTool(lang, false)}
-                disabled={languages.some(l => l.id === lang.id)}
+          {section.tools.length > 0 && (
+            <Box sx={{ mb: 4 }}>
+              <Slider
+                value={getSliderValue(section.tools)}
+                onChange={(_, value) => handleSliderChange(value as number[], section.isEditor)}
+                marks={getSliderMarks(section.tools, section.isEditor)}
+                step={1}
+                min={0}
+                max={100}
                 sx={{
-                  whiteSpace: 'normal',
-                  textAlign: 'center',
-                  minHeight: '48px',
-                  minWidth: '120px',
-                  flex: '1 1 auto',
-                  maxWidth: '180px',
-                  borderColor: getColorFromType(lang.type, false, lang.id),
-                  color: getColorFromType(lang.type, false, lang.id),
-                  '&:hover': {
-                    borderColor: getColorFromType(lang.type, false, lang.id),
-                    backgroundColor: `${getColorFromType(lang.type, false, lang.id)}10`
+                  '& .MuiSlider-track': {
+                    background: 'none'
+                  },
+                  '& .MuiSlider-rail': {
+                    opacity: 1,
+                    background: 'linear-gradient(to right, ' +
+                      section.tools.map((tool, index, array) => {
+                        const type = (section.isEditor ? predefinedEditors : predefinedLanguages).find(e => e.id === tool.id)?.type ?? 50;
+                        const startPercent = index === 0 ? 0 : array.slice(0, index).reduce((sum, e) => sum + e.usage, 0);
+                        const endPercent = startPercent + tool.usage;
+                        return `${getColorFromType(type, section.isEditor, tool.id)} ${startPercent}% ${endPercent}%`;
+                      }).join(', ') + ')'
                   }
                 }}
-              >
-                {lang.name}
-              </Button>
-            ))}
-          </Box>
-        </>
-      )}
-
-      {languages.length > 0 && (
-        <Box sx={{ mb: 4 }}>
-          <Slider
-            value={getSliderValue(languages)}
-            onChange={(_, value) => handleSliderChange(value as number[], false)}
-            marks={getSliderMarks(languages, false)}
-            step={1}
-            min={0}
-            max={100}
-            sx={{
-              '& .MuiSlider-track': {
-                background: 'none'
-              },
-              '& .MuiSlider-rail': {
-                opacity: 1,
-                background: 'linear-gradient(to right, ' +
-                  languages.map((lang, index, array) => {
-                    const type = predefinedLanguages.find(l => l.id === lang.id)?.type ?? 50;
-                    const startPercent = index === 0 ? 0 : array.slice(0, index).reduce((sum, l) => sum + l.usage, 0);
-                    const endPercent = startPercent + lang.usage;
-                    return `${getColorFromType(type, false, lang.id)} ${startPercent}% ${endPercent}%`;
-                  }).join(', ') + ')'
-              }
-            }}
-          />
-          <ToolList
-            tools={languages}
-            isEditor={false}
-            getColorFromType={getColorFromType}
-            onRemove={(id) => removeTool(id, false)}
-          />
-        </Box>
-      )}
+              />
+              <ToolList
+                tools={section.tools}
+                isEditor={section.isEditor}
+                getColorFromType={getColorFromType}
+                onRemove={(id) => removeTool(id, section.isEditor)}
+              />
+            </Box>
+          )}
+        </Fragment>
+      ))}
     </Box>
   );
 };
