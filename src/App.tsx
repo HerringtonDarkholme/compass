@@ -43,7 +43,7 @@ const App = () => {
             Add your preferred editors and languages below, then adjust their usage percentages to see where you stand in the programming paradigm space.
           </Typography>
 
-          <InputPanel onPositionUpdate={handlePositionUpdate} hideButtons={showCompass} />
+          <InputPanel onPositionUpdate={handlePositionUpdate} hideControl={showCompass} />
 
           {!showCompass && (
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>

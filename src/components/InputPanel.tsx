@@ -16,11 +16,11 @@ export interface Tool {
 
 interface InputPanelProps {
   onPositionUpdate: (editorPos: number, langPos: number) => void;
-  hideButtons?: boolean;
+  hideControl?: boolean;
 }
 
 
-const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
+const InputPanel = ({ onPositionUpdate, hideControl }: InputPanelProps) => {
   const [editors, setEditors] = useState<Tool[]>([]);
   const [languages, setLanguages] = useState<Tool[]>([]);
 
@@ -201,7 +201,7 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
         { title: 'Languages', tools: languages, isEditor: false, items: predefinedLanguages }].map(section => (
         <Fragment key={section.title}>
           <Typography variant="h6" gutterBottom>{section.title}</Typography>
-          {!hideButtons && (
+          {!hideControl && (
             <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>
               {section.items.map(item => (
                 <Button
@@ -230,15 +230,16 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
             </Box>
           )}
 
-          <Box sx={{ mb: 4 }}>
+          <Box sx={{ mb: 2 }}>
             <Slider
-              value={getSliderValue(section.tools)}
+              value={!hideControl ? getSliderValue(section.tools) : []}
               onChange={(_, value) => handleSliderChange(value as number[], section.isEditor)}
-              marks={getSliderMarks(section.tools, section.isEditor)}
+              marks={!hideControl ? getSliderMarks(section.tools, section.isEditor) : []}
               step={1}
               min={0}
               max={100}
               disabled={section.tools.length === 0}
+              track={false}
               sx={{
                 '& .MuiSlider-track': {
                   background: 'none'
