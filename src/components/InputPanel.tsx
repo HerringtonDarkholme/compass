@@ -197,9 +197,9 @@ const InputPanel = ({ onPositionUpdate, onSelectionChange, hideButtons }: InputP
 
   return (
     <Box sx={{ mt: 4 }}>
+      <Typography variant="h6" gutterBottom>Editors</Typography>
       {!hideButtons && (
         <>
-          <Typography variant="h6" gutterBottom>Editors</Typography>
           <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>        {predefinedEditors.map(editor => (
             <Button
               key={editor.id}
@@ -261,10 +261,9 @@ const InputPanel = ({ onPositionUpdate, onSelectionChange, hideButtons }: InputP
           />
         </Box>
       )}
-
+      <Typography variant="h6" gutterBottom>Languages</Typography>
       {!hideButtons && (
         <>
-          <Typography variant="h6" gutterBottom>Languages</Typography>
           <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>        {predefinedLanguages.map(lang => (
               <Button
                 key={lang.id}

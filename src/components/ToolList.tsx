@@ -19,9 +19,20 @@ const ToolList = ({ tools, isEditor, getColorFromType, onRemove }: ToolListProps
   };
 
   return (
-    <List>
+    <List sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
       {tools.map((tool) => (
-        <ListItem key={tool.id} dense>
+        <ListItem 
+          key={tool.id} 
+          dense 
+          sx={{ 
+            flex: '0 1 auto',
+            minWidth: '200px',
+            maxWidth: '300px',
+            border: '1px solid #e0e0e0',
+            borderRadius: 1,
+            m: 0
+          }}
+        >
           <Box
             sx={{
               width: '16px',
