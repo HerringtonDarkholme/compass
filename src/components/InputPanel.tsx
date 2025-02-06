@@ -230,38 +230,39 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
             </Box>
           )}
 
-          {section.tools.length > 0 && (
-            <Box sx={{ mb: 4 }}>
-              <Slider
-                value={getSliderValue(section.tools)}
-                onChange={(_, value) => handleSliderChange(value as number[], section.isEditor)}
-                marks={getSliderMarks(section.tools, section.isEditor)}
-                step={1}
-                min={0}
-                max={100}
-                sx={{
-                  '& .MuiSlider-track': {
-                    background: 'none'
-                  },
-                  '& .MuiSlider-rail': {
-                    opacity: 1,
-                    background: 'linear-gradient(to right, ' +
-                      section.tools.map((tool, index, array) => {
-                        const startPercent = index === 0 ? 0 : array.slice(0, index).reduce((sum, e) => sum + e.usage, 0);
-                        const endPercent = startPercent + tool.usage;
-                        return `${getColorFromType(section.isEditor, tool.id)} ${startPercent}% ${endPercent}%`;
-                      }).join(', ') + ')'
-                  }
-                }}
-              />
+          <Box sx={{ mb: 4 }}>
+            <Slider
+              value={getSliderValue(section.tools)}
+              onChange={(_, value) => handleSliderChange(value as number[], section.isEditor)}
+              marks={getSliderMarks(section.tools, section.isEditor)}
+              step={1}
+              min={0}
+              max={100}
+              disabled={section.tools.length === 0}
+              sx={{
+                '& .MuiSlider-track': {
+                  background: 'none'
+                },
+                '& .MuiSlider-rail': {
+                  opacity: 1,
+                  background: section.tools.length === 0 ? '#e0e0e0' : 'linear-gradient(to right, ' +
+                    section.tools.map((tool, index, array) => {
+                      const startPercent = index === 0 ? 0 : array.slice(0, index).reduce((sum, e) => sum + e.usage, 0);
+                      const endPercent = startPercent + tool.usage;
+                      return `${getColorFromType(section.isEditor, tool.id)} ${startPercent}% ${endPercent}%`;
+                    }).join(', ') + ')'
+                }
+              }}
+            />
+            {section.tools.length > 0 && (
               <ToolList
                 tools={section.tools}
                 isEditor={section.isEditor}
                 getColorFromType={getColorFromType}
                 onRemove={(id) => removeTool(id, section.isEditor)}
               />
-            </Box>
-          )}
+            )}
+          </Box>
         </Fragment>
       ))}
     </Box>
