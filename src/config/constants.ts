@@ -18,6 +18,8 @@ export const predefinedEditors = [
 // 0 - 100, 0 most indie, 100 most big tech
 export const predefinedLanguages = [
   { id: 'bash', name: 'Bash', score: 0 },
+  { id: 'c', name: 'C', score: 80 },
+  { id: 'cpp', name: 'C++', score: 90 },
   { id: 'clojure', name: 'Clojure', score: 5 },
   { id: 'csharp', name: 'C#', score: 95 },
   { id: 'dart', name: 'Dart', score: 65 },
@@ -57,6 +59,8 @@ export const editorColors: Record<string, string> = {
 // Programming language colors from GitHub
 export const languageColors: Record<string, string> = {
   bash: '#a32d2a',
+  c: '#555555', //C1C1C1 alternate for visibility
+  cpp: '#f34b7d', //6495ED 
   csharp: '#178600',
   java: '#B07219',
   javascript: '#F7DF1E',
