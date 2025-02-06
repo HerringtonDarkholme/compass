@@ -1,6 +1,7 @@
 // 0 - 100, 0 most liberal, 100 most authoritative
 export const predefinedEditors = [
   { id: 'atom', name: 'Atom', score: 70 },
+  { id: 'cursor', name: 'Cursor', score: 90 },
   { id: 'eclipse', name: 'Eclipse', score: 90 },
   { id: 'emacs', name: 'Emacs', score: 20 },
   { id: 'intellij', name: 'IntelliJ IDEA', score: 100 },
@@ -24,6 +25,7 @@ export const predefinedLanguages = [
   { id: 'go', name: 'Go', score: 60 },
   { id: 'haskell', name: 'Haskell', score: 25 },
   { id: 'java', name: 'Java', score: 90 },
+  { id: 'javascript', name: 'JavaScript', score: 80 },
   { id: 'kotlin', name: 'Kotlin', score: 75 },
   { id: 'python', name: 'Python', score: 50 },
   { id: 'ruby', name: 'Ruby', score: 20 },
@@ -45,13 +47,15 @@ export const editorColors: Record<string, string> = {
   notepadpp: '#90E59A',
   eclipse: '#2C2255',
   intellij: '#087CFA',
-  nano: '#4A90E2'
+  nano: '#4A90E2',
+  cursor: '#0066FF'
 };
 
 // Programming language colors from GitHub
 export const languageColors: Record<string, string> = {
   csharp: '#178600',
   java: '#B07219',
+  javascript: '#F7DF1E',
   typescript: '#3178C6',
   kotlin: '#A97BFF',
   swift: '#F05138',
