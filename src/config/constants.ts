@@ -12,10 +12,12 @@ export const predefinedEditors = [
   { id: 'vim', name: 'Vim', score: 20 },
   { id: 'vscode', name: 'VS Code', score: 90 },
   { id: 'webstorm', name: 'WebStorm', score: 100 },
+  { id: 'zed', name: 'Zed', score: 100 },
 ];
 
 // 0 - 100, 0 most indie, 100 most big tech
 export const predefinedLanguages = [
+  { id: 'bash', name: 'Bash', score: 100 },
   { id: 'clojure', name: 'Clojure', score: 5 },
   { id: 'csharp', name: 'C#', score: 95 },
   { id: 'dart', name: 'Dart', score: 65 },
@@ -48,11 +50,13 @@ export const editorColors: Record<string, string> = {
   eclipse: '#2C2255',
   intellij: '#087CFA',
   nano: '#4A90E2',
-  cursor: '#0066FF'
+  cursor: '#0066FF',
+  zed: '#0751cf';
 };
 
 // Programming language colors from GitHub
 export const languageColors: Record<string, string> = {
+  bash: '#a32d2a',
   csharp: '#178600',
   java: '#B07219',
   javascript: '#F7DF1E',
