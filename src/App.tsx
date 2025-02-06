@@ -19,7 +19,7 @@ const theme = createTheme({
 const CompassContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   height: '500px',
-  padding: '50px 0',
+  padding: '20px 0',
   position: 'relative',
   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(4),
@@ -54,6 +54,16 @@ const App = () => {
         <Box sx={{ my: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom align="center">
             Programming Compass
+          </Typography>
+          <Typography variant="body1" paragraph align="center" sx={{ mb: 1, textWrap: 'balance' }}>
+            The Programming Compass helps you visualize your development style based on your choice of editors and programming languages.
+          </Typography>
+          <Typography variant="body1" paragraph align="center" sx={{ mb: 1, textWrap: 'balance' }}>
+            The vertical axis represents the spectrum from Liberal (bottom) to Authoritative (top) development editors,
+            while the horizontal axis shows the range from Community-driven (left) to Corporate (right) language.
+          </Typography>
+          <Typography variant="body1" paragraph align="center" sx={{ mb: 1, textWrap: 'balance' }}>
+            Add your preferred editors and languages below, then adjust their usage percentages to see where you stand in the programming paradigm space.
           </Typography>
           <CompassContainer>
             <Box sx={{
@@ -94,9 +104,10 @@ const App = () => {
                   transform: 'translate(-120%, -50%)',
                   whiteSpace: 'nowrap',
                   color: '#666',
+                  textWrap: 'balance'
                 }}
               >
-                Left
+                Lang Left
               </Typography>
               <Typography
                 sx={{
@@ -106,9 +117,10 @@ const App = () => {
                   transform: 'translate(120%, -50%)',
                   whiteSpace: 'nowrap',
                   color: '#666',
+                  textWrap: 'balance'
                 }}
               >
-                Right
+                Lang Right
               </Typography>
               <Typography
                 sx={{
@@ -118,9 +130,10 @@ const App = () => {
                   transform: 'translate(50%, -120%)',
                   whiteSpace: 'nowrap',
                   color: '#666',
+                  textWrap: 'balance'
                 }}
               >
-                Authoritative
+                Authoritative Editor
               </Typography>
               <Typography
                 sx={{
@@ -130,9 +143,10 @@ const App = () => {
                   transform: 'translate(50%, 120%)',
                   whiteSpace: 'nowrap',
                   color: '#666',
+                  textWrap: 'balance'
                 }}
               >
-                Liberal
+                Liberal Editor
               </Typography>
               <Box
                 sx={{
