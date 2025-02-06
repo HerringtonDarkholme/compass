@@ -3,6 +3,8 @@ import { Box, Container, Typography, ThemeProvider, createTheme } from '@mui/mat
 import { styled } from '@mui/material/styles';
 import InputPanel from './components/InputPanel';
 
+import './App.css';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -26,7 +28,7 @@ const CompassContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-const QuadrantBox = styled(Box)({  
+const QuadrantBox = styled(Box)({
   width: '100%',
   height: '100%',
   display: 'flex',
@@ -54,9 +56,9 @@ const App = () => {
             Programming Compass
           </Typography>
           <CompassContainer>
-            <Box sx={{ 
-              width: '100%', 
-              height: '100%', 
+            <Box sx={{
+              width: '100%',
+              height: '100%',
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
               gridTemplateRows: '1fr 1fr',
