@@ -61,7 +61,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg">
-        <Box sx={{ my: 3, minWidth: '600px' }} ref={compassRef}>
+        <Box sx={{ my: 3, minWidth: '600px', px: 2 }} ref={compassRef}>
           <Typography variant="h4" component="h1" gutterBottom align="center">
             My Programming Compass
           </Typography>
