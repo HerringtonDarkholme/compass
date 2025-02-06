@@ -18,7 +18,7 @@ const theme = createTheme({
 
 
 const App = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState<{x: number, y: number} | null>(null);
   const [showCompass, setShowCompass] = useState(false);
 
   const handlePositionUpdate = (editorPos: number, langPos: number) => {
@@ -44,21 +44,21 @@ const App = () => {
           </Typography>
 
           <InputPanel onPositionUpdate={handlePositionUpdate} hideButtons={showCompass} />
-          
+
           {!showCompass && (
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
               <Button
                 variant="contained"
                 color="primary"
                 onClick={() => setShowCompass(true)}
-                disabled={!position.x && !position.y}
+                disabled={!position}
               >
                 Show My Position on the Compass
               </Button>
             </Box>
           )}
 
-          {showCompass && (
+          {showCompass && position && (
             <CompassView position={position} />
           )}
         </Box>

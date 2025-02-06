@@ -172,6 +172,9 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
   };
 
   const updatePositions = (currentEditors: Tool[], currentLanguages: Tool[]) => {
+    if (currentEditors.length === 0 || currentLanguages.length === 0) {
+      return
+    }
     const editorPos = calculatePosition(currentEditors);
     const langPos = calculatePosition(currentLanguages);
     onPositionUpdate(editorPos, langPos);
