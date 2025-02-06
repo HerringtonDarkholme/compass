@@ -19,7 +19,7 @@ export const predefinedEditors = [
 export const predefinedLanguages = [
   { id: 'bash', name: 'Bash', score: 0 },
   { id: 'c', name: 'C', score: 80 },
-  { id: 'c++', name: 'C++', score: 90 },
+  { id: 'cpp', name: 'C++', score: 90 },
   { id: 'clojure', name: 'Clojure', score: 5 },
   { id: 'csharp', name: 'C#', score: 95 },
   { id: 'dart', name: 'Dart', score: 65 },
