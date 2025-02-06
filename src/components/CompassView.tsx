@@ -1,7 +1,4 @@
-import React from 'react';
-import { Box, Typography, Stack, Button, Snackbar } from '@mui/material';
-import { TwitterShareButton } from 'react-share';
-import html2canvas from 'html2canvas';
+import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 interface CompassViewProps {
@@ -34,39 +31,8 @@ const QuadrantBox = styled(Box)({
 });
 
 const CompassView = ({ position }: CompassViewProps) => {
-  const [showCopyToast, setShowCopyToast] = React.useState(false);
-  const compassRef = React.useRef<HTMLDivElement>(null);
-
-  const handleCopyImage = async () => {
-    if (compassRef.current) {
-      const canvas = await html2canvas(compassRef.current);
-      try {
-        canvas.toBlob(async (blob) => {
-          if (blob) {
-            await navigator.clipboard.write([
-              new ClipboardItem({
-                'image/png': blob
-              })
-            ]);
-            setShowCopyToast(true);
-          }
-        }, 'image/png');
-      } catch (err) {
-        console.error('Failed to copy image to clipboard:', err);
-      }
-    }
-  };
-
-  const getTweetText = () => {
-    const quadrant = {
-      x: position.x > 0 ? 'Right' : 'Left',
-      y: position.y > 0 ? 'Authoritarian' : 'Libertarian'
-    };
-    return `Check out my programming style! I'm in the ${quadrant.y} ${quadrant.x} quadrant on the Programming Compass! 🧭\nhttps://programming-compass.app`;
-  };
-
   return (
-    <Box ref={compassRef}>
+    <Box>
       <CompassContainer>
         <Box sx={{
           width: '100%',
@@ -166,23 +132,6 @@ const CompassView = ({ position }: CompassViewProps) => {
           />
         </Box>
       </CompassContainer>
-      <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2, mb: 4 }}>
-        <TwitterShareButton url="https://programming-compass.app" title={getTweetText()}>
-          <div style={{ display: 'inline-block' }}>
-            <Button variant="contained" color="primary" component="span">Share on Twitter</Button>
-          </div>
-        </TwitterShareButton>
-        <Button variant="contained" color="secondary" onClick={handleCopyImage}>
-          Copy Image
-        </Button>
-      </Stack>
-      <Snackbar
-        open={showCopyToast}
-        autoHideDuration={3000}
-        onClose={() => setShowCopyToast(false)}
-        message="Image copied to clipboard!"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      />
     </Box>
   );
 };

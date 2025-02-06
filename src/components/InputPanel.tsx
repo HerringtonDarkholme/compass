@@ -196,7 +196,7 @@ const InputPanel = ({ onPositionUpdate, hideControl }: InputPanelProps) => {
   };
 
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box sx={{ mt: 2 }}>
       {[{ title: 'Editors', tools: editors, isEditor: true, items: predefinedEditors },
         { title: 'Languages', tools: languages, isEditor: false, items: predefinedLanguages }].map(section => (
         <Fragment key={section.title}>
