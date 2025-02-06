@@ -12,12 +12,12 @@ export const predefinedEditors = [
   { id: 'vim', name: 'Vim', score: 20 },
   { id: 'vscode', name: 'VS Code', score: 90 },
   { id: 'webstorm', name: 'WebStorm', score: 100 },
-  { id: 'zed', name: 'Zed', score: 100 },
+  { id: 'zed', name: 'Zed', score: 30 },
 ];
 
 // 0 - 100, 0 most indie, 100 most big tech
 export const predefinedLanguages = [
-  { id: 'bash', name: 'Bash', score: 100 },
+  { id: 'bash', name: 'Bash', score: 0 },
   { id: 'clojure', name: 'Clojure', score: 5 },
   { id: 'csharp', name: 'C#', score: 95 },
   { id: 'dart', name: 'Dart', score: 65 },
