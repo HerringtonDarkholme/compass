@@ -261,6 +261,7 @@ const InputPanel = ({ onPositionUpdate, hideControl }: InputPanelProps) => {
                 isEditor={section.isEditor}
                 getColorFromType={getColorFromType}
                 onRemove={(id) => removeTool(id, section.isEditor)}
+                hideControl={hideControl}
               />
             )}
           </Box>

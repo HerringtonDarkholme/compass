@@ -7,9 +7,10 @@ interface ToolListProps {
   isEditor: boolean;
   getColorFromType: (isEditor: boolean, id: string) => string;
   onRemove: (id: string) => void;
+  hideControl?: boolean;
 }
 
-const ToolList = ({ tools, isEditor, getColorFromType, onRemove }: ToolListProps) => {
+const ToolList = ({ tools, isEditor, getColorFromType, onRemove, hideControl }: ToolListProps) => {
   return (
     <List sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
       {tools.map((tool) => (
@@ -17,8 +18,8 @@ const ToolList = ({ tools, isEditor, getColorFromType, onRemove }: ToolListProps
           key={tool.id}
           dense
           sx={{
-            flex: '0 1 auto',
-            minWidth: '200px',
+            width: 'auto',
+            flex: '0 0 auto',
             maxWidth: '300px',
             border: '1px solid #e0e0e0',
             borderRadius: 1,
@@ -37,11 +38,13 @@ const ToolList = ({ tools, isEditor, getColorFromType, onRemove }: ToolListProps
           <ListItemText
             primary={`${tool.name} (${tool.usage.toFixed(1)}%)`}
           />
-          <ListItemSecondaryAction>
-            <IconButton edge="end" onClick={() => onRemove(tool.id)}>
-              <DeleteIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
+          {!hideControl && (
+            <ListItemSecondaryAction>
+              <IconButton edge="end" onClick={() => onRemove(tool.id)}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          )}
         </ListItem>
       ))}
     </List>
