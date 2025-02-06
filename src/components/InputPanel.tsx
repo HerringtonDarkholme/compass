@@ -20,6 +20,7 @@ interface Tool {
 
 interface InputPanelProps {
   onPositionUpdate: (editorPos: number, langPos: number) => void;
+  onSelectionChange?: (hasEditors: boolean, hasLanguages: boolean) => void;
 }
 
 // 0 - 100, 0 most liberal, 100 most authoritative
@@ -55,7 +56,7 @@ const predefinedLanguages = [
   { id: 'clojure', name: 'Clojure', type: 5 }
 ];
 
-const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
+const InputPanel = ({ onPositionUpdate, onSelectionChange }: InputPanelProps) => {
   const [editors, setEditors] = useState<Tool[]>([]);
   const [languages, setLanguages] = useState<Tool[]>([]);
 
@@ -87,6 +88,7 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
         updatePositions(editors, newLanguages);
       }
     }
+    onSelectionChange?.(editors.length > 0 || isEditor, languages.length > 0 || !isEditor);
   };
 
   const removeTool = (id: string, isEditor: boolean) => {
@@ -115,11 +117,11 @@ const InputPanel = ({ onPositionUpdate }: InputPanelProps) => {
         updatePositions(editors, []);
       }
     }
+    onSelectionChange?.(editors.length > 0 && !isEditor, languages.length > 0 && isEditor);
   };
 
   const handleSliderChange = (values: number[], isEditor: boolean) => {
     const tools = isEditor ? editors : languages;
-    const setTools = isEditor ? setEditors : setLanguages;
 
     if (tools.length < 2) return;
 
