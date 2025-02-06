@@ -19,7 +19,7 @@ const theme = createTheme({
 const CompassContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   height: '500px',
-  border: '1px solid #ccc',
+  padding: '50px 0',
   position: 'relative',
   marginTop: theme.spacing(4),
   marginBottom: theme.spacing(4),
@@ -63,6 +63,7 @@ const App = () => {
               gridTemplateColumns: '1fr 1fr',
               gridTemplateRows: '1fr 1fr',
               position: 'relative',
+              border: '1px solid #ccc',
               gap: 0
             }}>
               <QuadrantBox sx={{ backgroundColor: '#ffb3b3' }}>Authoritarian Left</QuadrantBox>
@@ -85,6 +86,54 @@ const App = () => {
                 borderLeft: '2px solid black',
                 zIndex: 1,
               }} />
+              <Typography
+                sx={{
+                  position: 'absolute',
+                  left: '0',
+                  top: '50%',
+                  transform: 'translate(-120%, -50%)',
+                  whiteSpace: 'nowrap',
+                  color: '#666',
+                }}
+              >
+                Left
+              </Typography>
+              <Typography
+                sx={{
+                  position: 'absolute',
+                  right: '0',
+                  top: '50%',
+                  transform: 'translate(120%, -50%)',
+                  whiteSpace: 'nowrap',
+                  color: '#666',
+                }}
+              >
+                Right
+              </Typography>
+              <Typography
+                sx={{
+                  position: 'absolute',
+                  right: '50%',
+                  top: '0',
+                  transform: 'translate(50%, -120%)',
+                  whiteSpace: 'nowrap',
+                  color: '#666',
+                }}
+              >
+                Authoritative
+              </Typography>
+              <Typography
+                sx={{
+                  position: 'absolute',
+                  right: '50%',
+                  bottom: '0',
+                  transform: 'translate(50%, 120%)',
+                  whiteSpace: 'nowrap',
+                  color: '#666',
+                }}
+              >
+                Liberal
+              </Typography>
               <Box
                 sx={{
                   position: 'absolute',
@@ -100,6 +149,7 @@ const App = () => {
               />
             </Box>
           </CompassContainer>
+          
           <InputPanel onPositionUpdate={handlePositionUpdate} />
         </Box>
       </Container>
