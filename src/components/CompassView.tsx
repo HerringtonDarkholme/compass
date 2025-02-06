@@ -5,13 +5,12 @@ interface CompassViewProps {
   position: { x: number; y: number };
 }
 
-const CompassContainer = styled(Box)(({ theme }) => ({
-  width: '100%',
+const CompassContainer = styled(Box)(() => ({
+  width: '500px',
   height: '500px',
   padding: '20px 0',
   position: 'relative',
-  marginTop: theme.spacing(4),
-  marginBottom: theme.spacing(4),
+  margin: '0 auto',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

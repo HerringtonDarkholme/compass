@@ -55,15 +55,15 @@ const App = () => {
       x: position.x > 0 ? 'Right' : 'Left',
       y: position.y > 0 ? 'Authoritarian' : 'Libertarian'
     };
-    return `Check out my programming style! I'm in the ${quadrant.y} ${quadrant.x} quadrant on the Programming Compass! 🧭\nhttps://programming-compass.app`;
+    return `Check out my programming style! I'm in the ${quadrant.y} ${quadrant.x} quadrant on the Programming Compass! 🧭`;
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg">
-        <Box sx={{ my: 4, minWidth: '600px' }}>
+        <Box sx={{ my: 3, minWidth: '600px' }} ref={compassRef}>
           <Typography variant="h4" component="h1" gutterBottom align="center">
-            Your Programming Compass
+            My Programming Compass
           </Typography>
           {!showCompass ? (
             <>
@@ -78,52 +78,52 @@ const App = () => {
                 Add your preferred editors and languages below, then adjust their usage percentages to see where you stand in the programming paradigm space.
               </Typography>
             </>
-          ) : position && (
+          ): position && (
             <Typography variant="h5" gutterBottom align="center">
               {position.y > 0 ? 'Authoritarian' : 'Libertarian'} {position.x > 0 ? 'Right' : 'Left'}
             </Typography>
           )}
 
+
           <InputPanel onPositionUpdate={handlePositionUpdate} hideControl={showCompass} />
 
-          {!showCompass && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setShowCompass(true)}
-                disabled={!position}
-              >
-                Show My Position on the Compass
-              </Button>
-            </Box>
-          )}
 
           {showCompass && position && (
-            <Box>
-              <Box ref={compassRef}>
-                <CompassView position={position} />
-              </Box>
-              <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2, mb: 4 }}>
-                <TwitterShareButton url="https://programming-compass.app" title={getTweetText()}>
-                  <div style={{ display: 'inline-block' }}>
-                    <Button variant="contained" color="primary" component="span">Share on Twitter</Button>
-                  </div>
-                </TwitterShareButton>
-                <Button variant="contained" color="secondary" onClick={handleCopyImage}>
-                  Copy Image
-                </Button>
-              </Stack>
-              <Snackbar
-                open={showCopyToast}
-                autoHideDuration={3000}
-                onClose={() => setShowCopyToast(false)}
-                message="Image copied to clipboard!"
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-              />
-            </Box>
+            <>
+              <CompassView position={position} />
+            </>
           )}
         </Box>
+        {!showCompass ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setShowCompass(true)}
+              disabled={!position}
+            >
+              Show My Position on the Compass
+            </Button>
+          </Box>
+        ) : (
+          <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2, mb: 4 }}>
+            <TwitterShareButton url="https://programming-compass.vercel.app/" title={getTweetText()}>
+              <div style={{ display: 'inline-block' }}>
+                <Button variant="contained" color="primary" component="span">Share on Twitter</Button>
+              </div>
+            </TwitterShareButton>
+            <Button variant="contained" color="secondary" onClick={handleCopyImage}>
+              Copy Image
+            </Button>
+          </Stack>
+        )}
+        <Snackbar
+          open={showCopyToast}
+          autoHideDuration={3000}
+          onClose={() => setShowCopyToast(false)}
+          message="Image copied to clipboard!"
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        />
       </Container>
     </ThemeProvider>
   );
