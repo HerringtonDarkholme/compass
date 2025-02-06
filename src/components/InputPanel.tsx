@@ -55,26 +55,28 @@ const InputPanel = ({ onPositionUpdate, hideButtons }: InputPanelProps) => {
   };
 
   const removeTool = (id: string, isEditor: boolean) => {
-    if (isEditor) {
-      const remainingEditors = editors.filter(e => e.id !== id);
-      const totalUsage = remainingEditors.reduce((sum, e) => sum + e.usage, 0);
-      if (remainingEditors.length > 0) {
-        const scaleFactor = 100 / totalUsage;
-        const newEditors = remainingEditors.map(e => ({ ...e, usage: e.usage * scaleFactor }));
-        setEditors(newEditors);
-        updatePositions(newEditors, languages);
+    const currentTools = isEditor ? editors : languages;
+    const remainingTools = currentTools.filter(tool => tool.id !== id);
+
+    if (remainingTools.length > 0) {
+      const totalUsage = remainingTools.reduce((sum, tool) => sum + tool.usage, 0);
+      const scaleFactor = 100 / totalUsage;
+      const updatedTools = remainingTools.map(tool => ({
+        ...tool,
+        usage: tool.usage * scaleFactor
+      }));
+
+      if (isEditor) {
+        setEditors(updatedTools);
+        updatePositions(updatedTools, languages);
       } else {
-        setEditors([]);
-        updatePositions([], languages);
+        setLanguages(updatedTools);
+        updatePositions(editors, updatedTools);
       }
     } else {
-      const remainingLanguages = languages.filter(l => l.id !== id);
-      const totalUsage = remainingLanguages.reduce((sum, l) => sum + l.usage, 0);
-      if (remainingLanguages.length > 0) {
-        const scaleFactor = 100 / totalUsage;
-        const newLanguages = remainingLanguages.map(l => ({ ...l, usage: l.usage * scaleFactor }));
-        setLanguages(newLanguages);
-        updatePositions(editors, newLanguages);
+      if (isEditor) {
+        setEditors([]);
+        updatePositions([], languages);
       } else {
         setLanguages([]);
         updatePositions(editors, []);
